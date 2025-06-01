@@ -1,0 +1,8 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="50" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="2"/>
+<path d="M45 45C45 41.6863 47.6863 39 51 39H69C72.3137 39 75 41.6863 75 45V75C75 78.3137 72.3137 81 69 81H51C47.6863 81 45 78.3137 45 75V45Z" fill="#E0E0E0"/>
+<path d="M52 48H68V54H52V48Z" fill="#CCCCCC"/>
+<path d="M52 58H68V64H52V58Z" fill="#CCCCCC"/>
+<path d="M52 68H62V74H52V68Z" fill="#CCCCCC"/>
+<text x="60" y="100" text-anchor="middle" fill="#999999" font-size="12" font-family="Arial, sans-serif">暂无数据</text>
+</svg>

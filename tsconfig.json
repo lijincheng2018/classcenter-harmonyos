@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "types": [],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/main/ets/types"
+    ],
+    "paths": {
+      "js-md5": ["./node_modules/js-md5/src/md5.js"]
+    }
+  },
+  "include": [
+    "src/main/ets/**/*.ts"
+  ]
+}

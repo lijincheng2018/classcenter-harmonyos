@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/LoginPage",
+    "pages/Index",
+    "pages/NoticeDetailPage",
+    "pages/DocPage",
+    "pages/RandomPage",
+    "pages/ExamPage",
+    "pages/ExamReportPage"
+  ]
+}
