@@ -14,7 +14,7 @@
 
 |                         登录页                          |                         首页                          |
 |:----------------------------------------------------:|:---------------------------------------------------:|
-| <img src="screenshots/loginPage.png"  width="300px"> | <img src="screenshots/mainPage.png"  width="300px"> | 
+| <img src="screenshots/loginPage.jpg"  width="300px"> | <img src="screenshots/mainPage.jpg"  width="300px"> | 
 
 
 
