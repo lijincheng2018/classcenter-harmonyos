@@ -2,7 +2,7 @@
 import router from '@ohos.router';
 import HttpService from '../services/HttpService';
 import CommonConstants from '../common/Constants';
-import { NoticeVO, PageParams, NoticePageResult } from '../models/dataModels';
+import { NoticeVO, PageParams, NoticePageResult, TaskCountVO } from '../models/dataModels';
 import TokenManager from '../utils/TokenManager';
 
 @Preview
@@ -11,10 +11,41 @@ export default struct HomePage {
   @State username: string = '';
   @State notices: NoticeVO[] = [];
   @State loading: boolean = false;
+  @State taskCount: TaskCountVO | null = null;
+  @State taskLoading: boolean = false;
 
   async aboutToAppear() {
-    this.username = AppStorage.get<string>('username') || '用户';
-    await this.loadNotices();
+    this.username = AppStorage.get<string>('name') || '用户';
+    await Promise.all([
+      this.loadNotices(),
+      this.loadTaskCount()
+    ]);
+  }
+
+  // 加载任务统计
+  private async loadTaskCount() {
+    this.taskLoading = true;
+    try {
+      const token = await TokenManager.getToken();
+      const httpService = HttpService;
+      httpService.setToken(token);
+
+      httpService.get<TaskCountVO>(
+        CommonConstants.API_TASK_COUNT
+      ).then(response => {
+        console.log("task count response=>", JSON.stringify(response));
+        if (response.code === 200 && response.data) {
+          this.taskCount = response.data;
+        }
+      }).catch((err: Error) => {
+        console.error('加载任务统计失败:', err);
+      }).finally(() => {
+        this.taskLoading = false;
+      });
+    } catch (error) {
+      console.error('加载任务统计失败:', error);
+      this.taskLoading = false;
+    }
   }
 
   // 加载公告列表
@@ -222,6 +253,112 @@ export default struct HomePage {
     })
   }
 
+  // 任务统计卡片构建器
+  @Builder
+  TaskStatCard() {
+    Column({ space: 16 }) {
+      Row() {
+        Text('任务完成情况')
+          .fontSize(18)
+          .fontColor('#333333')
+          .fontWeight(600)
+      }
+      .width('100%')
+      .padding({ left: 20, right: 20 })
+      
+      if (this.taskLoading) {
+        Row() {
+          LoadingProgress()
+            .width(24)
+            .height(24)
+            .color('#1698CE')
+          Text('加载中...')
+            .fontSize(14)
+            .fontColor('#666666')
+            .margin({ left: 8 })
+        }
+        .width('100%')
+        .height(80)
+        .justifyContent(FlexAlign.Center)
+      } else if (this.taskCount) {
+        Row() {
+          // 总任务数卡片
+          Column({ space: 8 }) {
+            Text(this.taskCount.totalCount.toString())
+              .fontSize(28)
+              .fontColor('#3B82F6')
+              .fontWeight(700)
+            Text('总任务数')
+              .fontSize(14)
+              .fontColor('#6B7280')
+              .fontWeight(500)
+          }
+          .layoutWeight(1)
+          .padding(20)
+          .backgroundColor('#F8FAFC')
+          .borderRadius(12)
+          .border({ width: 1, color: '#E2E8F0' })
+          
+          Blank().width(16)
+          
+          // 已完成任务数卡片
+          Column({ space: 8 }) {
+            Text(this.taskCount.finishCount.toString())
+              .fontSize(28)
+              .fontColor('#10B981')
+              .fontWeight(700)
+            Text('已完成')
+              .fontSize(14)
+              .fontColor('#6B7280')
+              .fontWeight(500)
+          }
+          .layoutWeight(1)
+          .padding(20)
+          .backgroundColor('#F0FDF4')
+          .borderRadius(12)
+          .border({ width: 1, color: '#BBF7D0' })
+          
+          Blank().width(16)
+          
+          // 完成率卡片
+          Column({ space: 8 }) {
+            Row({ space: 2 }) {
+              Text(`${this.taskCount.totalCount > 0 ? Math.round((this.taskCount.finishCount / this.taskCount.totalCount) * 100) : 0}`)
+                .fontSize(28)
+                .fontColor('#F59E0B')
+                .fontWeight(700)
+              Text('%')
+                .fontSize(20)
+                .fontColor('#F59E0B')
+                .fontWeight(700)
+            }
+            .justifyContent(FlexAlign.Center)
+            Text('完成率')
+              .fontSize(14)
+              .fontColor('#6B7280')
+              .fontWeight(500)
+          }
+          .layoutWeight(1)
+          .padding(20)
+          .backgroundColor('#FFFBEB')
+          .borderRadius(12)
+          .border({ width: 1, color: '#FDE68A' })
+        }
+        .width('100%')
+        .padding({ left: 20, right: 20 })
+      } else {
+        Column() {
+          Text('暂无任务数据')
+            .fontSize(14)
+            .fontColor('#999999')
+        }
+        .width('100%')
+        .height(80)
+        .justifyContent(FlexAlign.Center)
+      }
+    }
+  }
+
   build() {
     Column() {
       // 顶部欢迎区域
@@ -264,20 +401,20 @@ export default struct HomePage {
             Column() {
               this.FunctionCard('个人履历', $r('app.media.resume'), '#E6F2FF', '#007DFF', () => {
                 router.pushUrl({ url: 'pages/DocPage' });
-                // promptAction.showToast({ message: '个人履历功能开发中...' })
-              }, { topLeft: 12, topRight: 12, bottomLeft: 0, bottomRight: 0 }) // 顶部卡片，仅顶部圆角
+              }, { topLeft: 12, topRight: 12, bottomLeft: 0, bottomRight: 0 })
               this.FunctionCard('成绩查询', $r('app.media.ic_exam'), '#FFF0F0', '#FF5A5A', () => {
                 router.pushUrl({ url: 'pages/ExamPage' });
-                // promptAction.showToast({ message: '成绩查询功能开发中...' })
-              }, 0) // 中间卡片，无圆角
+              }, 0)
               this.FunctionCard('随机抽号', $r('app.media.ic_random'), '#E9F7EA', '#4CAF50', () => {
                 router.pushUrl({ url: 'pages/RandomPage' });
-                // promptAction.showToast({ message: '随机抽号功能开发中...' })
-              }, 0) // 中间卡片，无圆角
-              this.ComingSoonCard({ topLeft: 0, topRight: 0, bottomLeft: 12, bottomRight: 12 }) // 底部卡片，仅底部圆角
+              }, 0)
+              this.ComingSoonCard({ topLeft: 0, topRight: 0, bottomLeft: 12, bottomRight: 12 })
             }
             .padding({ left: 20, right: 20 })
           }
+
+          // 任务完成情况区域
+          this.TaskStatCard()
 
           // 最新公告区域
           Column({ space: 16 }) {

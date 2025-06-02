@@ -23,6 +23,10 @@
     {
       "name": "input_margin_top",
       "value": "12vp"
+    },
+    {
+      "name": "font_size",
+      "value": "14fp"
     }
   ]
 }

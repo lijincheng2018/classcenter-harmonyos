@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "班级信息中心云平台"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "任务完成情况卡片，可以直观展示任务完成状态"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "任务完成情况"
+    },
+    {
+      "name": "widget_desc",
+      "value": "可以直观展示任务完成情况"
+    },
+    {
+      "name": "widget_display_name",
+      "value": "任务完成状态"
     }
   ]
 }

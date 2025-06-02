@@ -14,7 +14,7 @@ export default struct ProfilePage {
   @State isLogin: boolean = false;
 
   aboutToAppear() {
-    this.username = AppStorage.get<string>('username') || '未登录';
+    this.username = AppStorage.get<string>('name') || '未登录';
     this.isLogin = AppStorage.get<boolean>('isLogin') || false;
   }
 

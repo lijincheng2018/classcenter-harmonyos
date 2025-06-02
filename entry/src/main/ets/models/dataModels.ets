@@ -210,3 +210,15 @@ export interface DrawResult {
   name: string;
   timestamp: string;
 }
+
+
+// 任务统计相关
+export interface TaskCountVO {
+  finishCount: number;
+  totalCount: number;
+}
+
+export interface TaskCountResult {
+  finishCount: number;
+  totalCount: number;
+}

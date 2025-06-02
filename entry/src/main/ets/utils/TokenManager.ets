@@ -9,7 +9,7 @@ import HttpService from '../services/HttpService';
 export class TokenManager {
   private static readonly PREF_NAME = 'userPrefs';
   private static readonly TOKEN_KEY = 'token';
-  private static readonly USERNAME_KEY = 'username';
+  private static readonly USERNAME_KEY = 'name';
   private static readonly IS_LOGIN_KEY = 'isLogin';
 
   /**
@@ -60,7 +60,9 @@ export class TokenManager {
         name: TokenManager.PREF_NAME
       });
 
-      return pref.getSync(TokenManager.TOKEN_KEY, '').toString();
+      const token = pref.getSync(TokenManager.TOKEN_KEY, '').toString();
+
+      return token;
     } catch (error) {
       return '';
     }
@@ -107,7 +109,7 @@ export class TokenManager {
       const userInfo = await TokenManager.getUserInfo();
 
       AppStorage.setOrCreate('token', userInfo.token);
-      AppStorage.setOrCreate('username', userInfo.username);
+      AppStorage.setOrCreate('name', userInfo.username);
       AppStorage.setOrCreate('isLogin', userInfo.isLogin);
       console.log('AppStorage初始化完成');
     } catch (error) {
