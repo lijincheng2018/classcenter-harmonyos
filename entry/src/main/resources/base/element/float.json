@@ -3,6 +3,26 @@
     {
       "name": "page_text_font_size",
       "value": "50fp"
+    },
+    {
+      "name": "input_padding_top",
+      "value": "40vp"
+    },
+    {
+      "name": "input_padding_left",
+      "value": "12vp"
+    },
+    {
+      "name": "login_input_height",
+      "value": "48vp"
+    },
+    {
+      "name": "big_text_size",
+      "value": "18vp"
+    },
+    {
+      "name": "input_margin_top",
+      "value": "12vp"
     }
   ]
 }

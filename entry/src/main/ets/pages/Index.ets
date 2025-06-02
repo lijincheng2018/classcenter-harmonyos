@@ -57,25 +57,36 @@ struct Index {
     if (this.isLoading) {
       // 加载中界面
       Column() {
-        Text('🎓')
-          .fontSize(60)
-          .margin({ bottom: 16 })
+        // Logo区域
+        Image($r('app.media.app_ic_logo'))
+          .width(80)
+          .height(80)
+          .margin({ bottom: 32 })
+        
+        // 标题
         Text('班级信息中心云平台')
-          .fontSize(24)
-          .fontWeight(FontWeight.Bold)
+          .fontSize(20)
+          .fontWeight(FontWeight.Medium)
+          .fontColor('#182431')
+          .margin({ bottom: 40 })
+        
+        // 加载指示器
+        LoadingProgress()
+          .width(32)
+          .height(32)
+          .color('#007DFF')
           .margin({ bottom: 16 })
+        
+        // 加载文字
         Text('正在加载...')
-          .fontSize(16)
-          .fontColor('#666')
+          .fontSize(14)
+          .fontColor('#99182431')
       }
       .width('100%')
       .height('100%')
       .justifyContent(FlexAlign.Center)
       .alignItems(HorizontalAlign.Center)
-      .linearGradient({
-        angle: 135,
-        colors: [['#667eea', 0.0], ['#764ba2', 1.0]]
-      })
+      .backgroundColor('#F1F3F5')
     } else if (this.isLoggedIn) {
       // 已登录，显示主界面
       Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {

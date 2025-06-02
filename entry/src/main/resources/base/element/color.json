@@ -3,6 +3,10 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "placeholder_color",
+      "value": "#99182431"
     }
   ]
 }

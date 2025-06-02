@@ -6,6 +6,7 @@
     "pages/DocPage",
     "pages/RandomPage",
     "pages/ExamPage",
-    "pages/ExamReportPage"
+    "pages/ExamReportPage",
+    "pages/ProductWeb"
   ]
 }

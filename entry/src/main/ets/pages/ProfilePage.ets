@@ -147,15 +147,15 @@ export default struct ProfilePage {
         Column({ space: 12 }) {
           // 个人信息管理
           Column() {
-            Text('个人信息')
+            Text('个人功能')
               .fontSize(14)
               .fontColor('#999999')
               .width('100%')
               .padding({ left: 16, top: 12, bottom: 8 })
             
             Column() {
-              this.MenuItem($r('app.media.personal'), '个人荣誉', true, () => {
-                router.pushUrl({ url: 'pages/PersonalPage' });
+              this.MenuItem($r('app.media.ic_exam'), '成绩查询', true, () => {
+                router.pushUrl({ url: 'pages/ExamPage' });
               })
               
               Divider().height(1).color('#F0F0F0').margin({ left: 52 })
@@ -185,15 +185,25 @@ export default struct ProfilePage {
               Divider().height(1).color('#F0F0F0').margin({ left: 52 })
               
               this.MenuItem($r('app.media.about'), '关于我们', true, () => {
-                const toastOptions: ToastOptions = { message: '班级信息中心云平台 v1.0.0\n开发者：李锦成', duration: 2000 };
+                const toastOptions: ToastOptions = { message: '班级信息中心云平台鸿蒙版 v1.0.0\n开发者：李锦成', duration: 2000 };
                 promptAction.showToast(toastOptions);
               })
               
               Divider().height(1).color('#F0F0F0').margin({ left: 52 })
               
               this.MenuItem($r('app.media.help'), '帮助与反馈', true, () => {
-                const toastOptions: ToastOptions = { message: '功能开发中', duration: 2000 };
-                promptAction.showToast(toastOptions);
+                AlertDialog.show({
+                  title: '帮助与反馈',
+                  message: '您可以发送邮件至：\nsupport@classcloud.com.cn\n来获取帮助',
+                  confirm: {
+                    value: '关闭',
+                    action: () => {}
+                  }
+                });
+              })
+
+              this.MenuItem($r('app.media.web'), '产品网站', true, () => {
+                router.pushUrl({ url: 'pages/ProductWeb' });
               })
             }
             .borderRadius(12)

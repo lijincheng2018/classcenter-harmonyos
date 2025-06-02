@@ -109,11 +109,6 @@ struct ExamPage {
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .margin({ bottom: 4 })
           
-          Text(`班级: ${exam.bindClass}`)
-            .fontSize(14)
-            .fontColor('#666666')
-            .margin({ bottom: 2 })
-          
           Text(`考试时间: ${exam.examDate}`)
             .fontSize(12)
             .fontColor('#999999')

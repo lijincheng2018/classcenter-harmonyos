@@ -2,8 +2,9 @@
 import preferences from '@ohos.data.preferences';
 import router from '@ohos.router';
 import CommonConstants from '../common/Constants';
-import { UserInfo } from '../models/dataModels';
+import { UserInfo, Result, tokenValidateDTO } from '../models/dataModels';
 import { GlobalContext } from '../utils/GlobalContext';
+import HttpService from '../services/HttpService';
 
 export class TokenManager {
   private static readonly PREF_NAME = 'userPrefs';
@@ -19,7 +20,9 @@ export class TokenManager {
   static async saveToken(token: string, username: string): Promise<void> {
     try {
       const context = GlobalContext.getInstance().getContext();
-      if (!context) throw new Error("上下文未初始化");
+      if (!context) {
+        throw new Error("上下文未初始化");
+      }
 
       // 使用同步方法获取实例
       const pref = preferences.getPreferencesSync(context, {
@@ -49,7 +52,9 @@ export class TokenManager {
   static async getToken(): Promise<string> {
     try {
       const context = GlobalContext.getInstance().getContext();
-      if (!context) throw new Error("上下文未初始化");
+      if (!context) {
+        throw new Error("上下文未初始化");
+      }
 
       const pref = preferences.getPreferencesSync(context, {
         name: TokenManager.PREF_NAME
@@ -68,7 +73,9 @@ export class TokenManager {
   static async getUserInfo(): Promise<UserInfo> {
     try {
       const context = GlobalContext.getInstance().getContext();
-      if (!context) throw new Error("上下文未初始化");
+      if (!context) {
+        throw new Error("上下文未初始化");
+      }
 
       // 使用同步API获取preferences实例
       const pref = preferences.getPreferencesSync(context, {
@@ -114,7 +121,9 @@ export class TokenManager {
   static async clearToken(): Promise<void> {
     try {
       const context = GlobalContext.getInstance().getContext();
-      if (!context) throw new Error("上下文未初始化");
+      if (!context) {
+        throw new Error("上下文未初始化");
+      }
 
       // 使用同步方法获取实例
       const pref = preferences.getPreferencesSync(context, {
@@ -148,7 +157,22 @@ export class TokenManager {
   static async isLoggedIn(): Promise<boolean> {
     try {
       const token = await TokenManager.getToken();
-      return token !== '';
+      if (token === '') {
+        return false;
+      }
+
+      // 发送网络请求验证token状态
+      const httpService = HttpService;
+      httpService.setToken(token);
+
+      const postToken = { token: token } as tokenValidateDTO;
+
+      const response = await httpService.post<tokenValidateDTO>(
+        CommonConstants.API_VALIDATE_TOKEN,
+        postToken
+      );
+
+      return response.code === 200;
     } catch (error) {
       console.error('检查登录状态失败:', error);
       return false;

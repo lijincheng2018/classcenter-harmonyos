@@ -53,4 +53,16 @@ export default class CommonConstants {
   
   // 简历分析相关API
   static readonly API_RESUME: string = '/resume';
+
+
+  // 相关常量
+  /**
+   * The width or height of the component is spread across the parent component.
+   */
+  static readonly FULL_PARENT: string = '100%';
+
+  /**
+   * Left padding of the input box.
+   */
+  static readonly INPUT_PADDING_LEFT: number = 0;
 }

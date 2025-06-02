@@ -23,41 +23,44 @@ struct NoticeDetailPage {
 
   build() {
     Column() {
-      // 顶部导航栏 - 使用渐变背景
+      // 顶部导航栏
       Row() {
         Row() {
           Image($r('app.media.back'))
             .width(20)
             .height(20)
-            .fillColor('#FFFFFF')
+            .fillColor('#333333')
         }
         .width(40)
         .height(40)
         .borderRadius(20)
-        .backgroundColor('rgba(255, 255, 255, 0.2)')
+        // .backgroundColor('rgba(255, 255, 255, 0.2)')
         .justifyContent(FlexAlign.Center)
         .onClick(() => {
           router.back();
         })
         .transition({ type: TransitionType.All, scale: { x: 0.9, y: 0.9 } })
-        
+
         Text('公告详情')
           .fontSize(20)
-          .fontColor('#FFFFFF')
+          .fontColor('#333333')
           .fontWeight(700)
           .layoutWeight(1)
           .textAlign(TextAlign.Center)
-        
+
         // 占位，保持标题居中
         Row().width(40).height(40)
       }
       .width('100%')
-      .height(80)
-      .padding({ left: 20, right: 20, top: 20 })
-      .linearGradient({
-        angle: 135,
-        colors: [['#667eea', 0.0], ['#764ba2', 1.0]]
-      })
+      .height(60) // 调整导航栏高度
+      .padding({
+        left: 16,
+        right: 16,
+        top: 10,
+        bottom: 10
+      }) // 调整内边距
+      .backgroundColor('#FFFFFF')
+      .border({ width: { bottom: 1 }, color: '#E0E0E0' })
 
       if (this.notice && !this.isLoading) {
         Scroll() {
@@ -73,7 +76,7 @@ struct NoticeDetailPage {
                   .width('100%')
                   .textAlign(TextAlign.Start)
                   .lineHeight(32)
-                
+
                 // 发布时间标签
                 Row({ space: 8 }) {
                   Row() {
@@ -87,10 +90,15 @@ struct NoticeDetailPage {
                       .fontColor('#667eea')
                       .fontWeight(500)
                   }
-                  .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+                  .padding({
+                    left: 12,
+                    right: 12,
+                    top: 6,
+                    bottom: 6
+                  })
                   .backgroundColor('#f0f4ff')
                   .borderRadius(12)
-                  
+
                   Text(this.notice.time)
                     .fontSize(14)
                     .fontColor('#666666')
@@ -107,7 +115,12 @@ struct NoticeDetailPage {
                       .fontColor('#667eea')
                       .fontWeight(500)
                   }
-                  .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+                  .padding({
+                    left: 12,
+                    right: 12,
+                    top: 6,
+                    bottom: 6
+                  })
                   .backgroundColor('#f0f4ff')
                   .borderRadius(12)
 
@@ -121,16 +134,13 @@ struct NoticeDetailPage {
               }
               .width('100%')
               .alignItems(HorizontalAlign.Start)
-              
+
               // 优雅的分割线
               Row()
                 .width('100%')
                 .height(1)
-                .linearGradient({
-                  angle: 90,
-                  colors: [['rgba(102, 126, 234, 0)', 0.0], ['rgba(102, 126, 234, 0.3)', 0.5], ['rgba(102, 126, 234, 0)', 1.0]]
-                })
-              
+                .backgroundColor('#E0E0E0') // 修改分割线为纯色
+
               // 公告内容
               Text(this.notice.content)
                 .fontSize(16)
@@ -140,19 +150,20 @@ struct NoticeDetailPage {
                 .textAlign(TextAlign.Start)
                 .fontWeight(400)
             }
+            .alignItems(HorizontalAlign.Start)
+            .justifyContent(FlexAlign.Start)
             .width('100%')
             .padding(24)
             .backgroundColor('#FFFFFF')
             .borderRadius(20)
             .shadow({
-              radius: 20,
+              radius: 15,
               color: 'rgba(0, 0, 0, 0.08)',
               offsetX: 0,
               offsetY: 4
             })
-            .margin({ top: 20, bottom: 20 })
           }
-          .padding({ left: 20, right: 20 })
+          .padding({ top: 0, left: 20, right: 20 })
         }
         .layoutWeight(1)
         .scrollBar(BarState.Off)
@@ -163,17 +174,19 @@ struct NoticeDetailPage {
           LoadingProgress()
             .width(60)
             .height(60)
-            .color('#667eea')
-          
+            .color('#4A90E2')
+            .margin({ top: 40 })
+
           Text('加载中...')
             .fontSize(16)
-            .fontColor('#667eea')
+            .fontColor('#4A90E2')
             .margin({ top: 20 })
             .fontWeight(500)
         }
         .width('100%')
         .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
+        .alignItems(HorizontalAlign.Center)
+        .justifyContent(FlexAlign.Start)
       } else {
         // 错误状态 - 美化设计
         Column() {
@@ -181,26 +194,26 @@ struct NoticeDetailPage {
             Image($r('app.media.error'))
               .width(100)
               .height(100)
-              .fillColor('#ff6b6b')
-              .opacity(0.8)
-            
+              .fillColor('#D9534F')// 修改错误图标颜色
+              .opacity(1)
+
             Text('公告不存在')
               .fontSize(18)
               .fontColor('#333333')
               .fontWeight(600)
               .margin({ top: 24 })
-            
+
             Text('抱歉，您要查看的公告可能已被删除或不存在')
               .fontSize(14)
               .fontColor('#999999')
               .textAlign(TextAlign.Center)
               .margin({ top: 8 })
               .lineHeight(20)
-            
+
             Button('返回')
               .width(120)
               .height(44)
-              .backgroundColor('#667eea')
+              .backgroundColor('#4A90E2')// 修改按钮背景色
               .fontColor('#FFFFFF')
               .borderRadius(22)
               .margin({ top: 32 })
@@ -229,14 +242,11 @@ struct NoticeDetailPage {
         }
         .width('100%')
         .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
+        .justifyContent(FlexAlign.Start)
       }
     }
     .width('100%')
     .height('100%')
-    .linearGradient({
-      angle: 180,
-      colors: [['#f8fafc', 0.0], ['#e2e8f0', 1.0]]
-    })
+    .backgroundColor('#F5F5F5') // 修改页面背景为浅灰色
   }
 }

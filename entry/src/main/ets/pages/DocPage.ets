@@ -542,11 +542,18 @@ struct DocPage {
     Column() {
       // 顶部标题栏
       Row() {
+        Image($r('app.media.back'))
+          .width(24)
+          .height(24)
+          .onClick(() => router.back())
+
+
         Text('个人履历')
-          .fontSize(20)
+          .fontSize(18)
           .fontColor('#333333')
           .fontWeight(600)
           .layoutWeight(1)
+          .textAlign(TextAlign.Center)
         
         Button('添加')
           .height(36)

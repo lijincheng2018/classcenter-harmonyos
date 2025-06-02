@@ -7,6 +7,10 @@ export interface Result<T = Record<string, Object>> {
   data: T;
 }
 
+export interface tokenValidateDTO {
+  token: string;
+}
+
 export interface UserInfo {
   token: string;
   username: string;

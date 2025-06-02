@@ -11,6 +11,17 @@ import httpServiceInstance from '../services/HttpService';
 import TokenManager from '../utils/TokenManager';
 import { GlobalContext } from '../utils/GlobalContext';
 
+@Extend(TextInput)
+function inputStyle() {
+  .placeholderColor($r('app.color.placeholder_color'))
+  .height($r('app.float.login_input_height'))
+  .fontSize($r('app.float.big_text_size'))
+  .backgroundColor(Color.White)
+  .width(CommonConstants.FULL_PARENT)
+  .padding({ left: CommonConstants.INPUT_PADDING_LEFT })
+  .margin({ top: $r('app.float.input_margin_top') })
+}
+
 
 @Entry
 @Component
@@ -135,166 +146,123 @@ struct LoginPage {
   }
 
   build() {
-    Stack() {
-      // 背景渐变
-      Column()
-        .width('100%')
-        .height('100%')
-        .linearGradient({
-          angle: 135,
-          colors: [['#667eea', 0.0], ['#764ba2', 1.0]]
+    Column() {
+      // Logo区域
+      Image($r('app.media.app_ic_logo'))
+        .width(80)
+        .height(80)
+        .margin({
+          top: 60,
+          bottom: 40
         })
+      
+      // 标题
+      Text('班级信息中心云平台')
+        .fontSize(24)
+        .fontWeight(FontWeight.Medium)
+        .fontColor('#182431')
+        .margin({ bottom: 8 })
+      
+      // 副标题
+      Text('智慧教育，连接未来')
+        .fontSize(16)
+        .fontColor('#99182431')
+        .margin({ bottom: 40 })
 
-      // 主要内容
+      // 输入框区域
       Column() {
-        // Logo区域
-        Column() {
-          // 装饰性图标
-          Text('🎓')
-            .fontSize(60)
-            .margin({ bottom: 16 })
-          
-          // 标题
-          Text('班级信息中心云平台')
-            .fontSize(32)
-            .fontWeight(FontWeight.Bold)
-            .fontColor('#FFFFFF')
-            .textShadow({ radius: 2, color: 'rgba(0,0,0,0.3)', offsetX: 1, offsetY: 1 })
-            .margin({ bottom: 8 })
-          
-          // 副标题
-          Text('智慧教育，连接未来')
-            .fontSize(16)
-            .fontColor('rgba(255,255,255,0.8)')
-            .margin({ bottom: 50 })
-        }
-        .alignItems(HorizontalAlign.Center)
-
-        // 登录卡片
-        Column() {
-          // 用户名输入框
-          Row() {
-            Text('👤')
-              .fontSize(20)
-              .fontColor('#666')
-              .margin({ right: 12 })
-            
-            TextInput({ placeholder: '请输入账号', text: this.username })
-              .layoutWeight(1)
-              .height(50)
-              .backgroundColor('transparent')
-              .border({ width: 0 })
-              .fontSize(16)
-              .placeholderColor('#999')
-              .onChange(value => this.username = value)
-          }
+        TextInput({ placeholder: '请输入账号', text: this.username })
+          .placeholderColor('#99182431')
+          .height(48)
+          .fontSize(16)
+          .backgroundColor(Color.White)
           .width('100%')
-          .height(50)
-          .backgroundColor('#F8F9FA')
-          .borderRadius(25)
-          .padding({ left: 20, right: 20 })
-          .margin({ bottom: 16 })
-          .shadow({
-            radius: 8,
-            color: 'rgba(0,0,0,0.1)',
-            offsetX: 0,
-            offsetY: 2
+          .inputStyle()
+          .onChange((value: string) => {
+            this.username = value;
           })
 
-          // 密码输入框
-          Row() {
-            Text('🔒')
-              .fontSize(20)
-              .fontColor('#666')
-              .margin({ right: 12 })
-            
-            TextInput({ placeholder: '请输入密码', text: this.password })
-              .layoutWeight(1)
-              .height(50)
-              .backgroundColor('transparent')
-              .border({ width: 0 })
-              .fontSize(16)
-              .type(InputType.Password)
-              .placeholderColor('#999')
-              .onChange(value => this.password = value)
-          }
+        Line()
           .width('100%')
-          .height(50)
-          .backgroundColor('#F8F9FA')
-          .borderRadius(25)
-          .padding({ left: 20, right: 20 })
-          .margin({ bottom: 20 })
-          .shadow({
-            radius: 8,
-            color: 'rgba(0,0,0,0.1)',
-            offsetX: 0,
-            offsetY: 2
+          .height(1)
+          .backgroundColor('#F1F3F5')
+
+        TextInput({ placeholder: '请输入密码', text: this.password })
+          .placeholderColor('#99182431')
+          .height(48)
+          .fontSize(16)
+          .backgroundColor(Color.White)
+          .width('100%')
+          .inputStyle()
+          .type(InputType.Password)
+          .onChange((value: string) => {
+            this.password = value;
           })
-
-          // 记住密码
-          Row() {
-            Checkbox()
-              .select(this.rememberpwd)
-              .selectedColor('#667eea')
-              .unselectedColor('#DDD')
-              .onChange(value => this.rememberpwd = value)
-            
-            Text('记住密码')
-              .fontSize(14)
-              .fontColor('#666')
-              .margin({ left: 8 })
-          }
-          .width('100%')
-          .justifyContent(FlexAlign.Start)
-          .margin({ bottom: 30 })
-
-          // 登录按钮
-          Button(this.logining ? '登录中...' : '登录')
-            .width('100%')
-            .height(50)
-            .fontSize(18)
-            .fontWeight(FontWeight.Medium)
-            .fontColor('#FFFFFF')
-            .backgroundColor(this.logining ? '#CCC' : '#667eea')
-            .borderRadius(25)
-            .shadow({
-              radius: 12,
-              color: this.logining ? 'rgba(0,0,0,0.1)' : 'rgba(102,126,234,0.4)',
-              offsetX: 0,
-              offsetY: 4
-            })
-            .onClick(() => this.submitForm())
-            .enabled(!this.logining)
-            .animation({
-              duration: 200,
-              curve: Curve.EaseInOut
-            })
-        }
-        .width('85%')
-        .padding({ top: 40, bottom: 40, left: 30, right: 30 })
-        .backgroundColor('#FFFFFF')
-        .borderRadius(20)
-        .shadow({
-          radius: 20,
-          color: 'rgba(0,0,0,0.15)',
-          offsetX: 0,
-          offsetY: 8
-        })
-        .margin({ top: 20 })
-
-        // 底部装饰
-        Text('© 2024 班级信息中心云平台')
-          .fontSize(12)
-          .fontColor('rgba(255,255,255,0.6)')
-          .margin({ top: 40 })
       }
+      .padding({ top: 0,
+        bottom: 0,
+        left: $r('app.float.input_padding_left'),
+        right: $r('app.float.input_padding_left') })
+      .backgroundColor(Color.White)
+      .borderRadius(12)
+      .margin({ bottom: 20 })
+
+      // 记住密码和忘记密码
+      Row() {
+        Row() {
+          Checkbox()
+            .select(this.rememberpwd)
+            .selectedColor('#007DFF')
+            .unselectedColor('#CCCCCC')
+            .onChange(value => this.rememberpwd = value)
+          
+          Text('记住密码')
+            .fontColor('#007DFF')
+            .fontSize(14)
+            .fontWeight(FontWeight.Medium)
+            .margin({ left: 8 })
+        }
+        
+        Text('忘记密码')
+          .fontColor('#007DFF')
+          .fontSize(14)
+          .fontWeight(FontWeight.Medium)
+          .onClick(() => {
+            promptAction.showToast({ message: '请联系班级管理员重置密码', duration: 2000 });
+          })
+      }
+      .justifyContent(FlexAlign.SpaceBetween)
       .width('100%')
-      .height('100%')
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .padding({ left: 20, right: 20 })
+      .padding({
+        left: 16,
+        right: 16
+      })
+      .margin({ bottom: 40 })
+
+      // 登录按钮
+      Button(this.logining ? '登录中...' : '登录', { type: ButtonType.Capsule })
+        .width('100%')
+        .height(48)
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
+        .backgroundColor(this.logining ? '#CCCCCC' : '#007DFF')
+        .enabled(!this.logining)
+        .onClick(() => this.submitForm())
+
+      Blank()
+
+      // 底部版权信息
+      Text('© 2022-2025 班级信息中心云平台')
+        .fontSize(12)
+        .fontColor('#99182431')
+        .margin({ bottom: 40 })
     }
-    .width('100%')
+    .backgroundColor('#F1F3F5')
     .height('100%')
+    .width('100%')
+    .padding({
+      left: 24,
+      right: 24
+    })
   }
 }

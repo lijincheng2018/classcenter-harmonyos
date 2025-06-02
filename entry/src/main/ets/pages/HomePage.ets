@@ -59,98 +59,162 @@ export default struct HomePage {
 
   // 功能卡片构建器
   @Builder
-  FunctionCard(title: string, icon: Resource, color: string, onClick: () => void) {
-    Column() {
-      Image(icon)
-        .width(40)
-        .height(40)
-        .fillColor(color)
-      Text(title)
-        .fontSize(14)
-        .fontColor('#333333')
-        .margin({ top: 8 })
+  FunctionCard(title: string, icon: Resource, iconBgColor: string, iconColor: string, onClick: () => void, borderRadiusValue: number | BorderRadiuses = 12) {
+    Row() {
+      // 图标区域
+      Stack() {
+        Circle({ width: 48, height: 48 })
+          .fill(iconBgColor)
+        Image(icon)
+          .width(24)
+          .height(24)
+          .fillColor(iconColor)
+      }
+      .margin({ right: 16 })
+
+      // 文字区域
+      Column() {
+        Text(title)
+          .fontSize(16)
+          .fontColor('#333333')
+          .fontWeight(FontWeight.Medium)
+          .lineHeight(22)
+
+        Text('点击进入功能')
+          .fontSize(12)
+          .fontColor('#999999')
+          .margin({ top: 2 })
+          .lineHeight(18)
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      // 箭头图标
+      Image($r('app.media.ic_public_arrow_right'))
+        .width(18)
+        .height(18)
+        .fillColor('#CCCCCC')
     }
     .width('100%')
-    .height(80)
-    .justifyContent(FlexAlign.Center)
-    .backgroundColor('#FFFFFF')
-    .borderRadius(12)
-    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
-    .onClick(onClick)
+    .height(72)
+    .padding({ left: 16, right: 16 })
+    .backgroundColor(Color.White)
+    .borderRadius(borderRadiusValue)
+    .shadow({ radius: 8, color: '#0D000000', offsetX: 0, offsetY: 2 })
+    .onClick(() => {
+      onClick();
+    })
   }
 
-  // 敬请期待卡片构建器
+  // 敬请期待卡片
   @Builder
-  ComingSoonCard() {
-    Column() {
-      Row() {
-        Circle({ width: 6, height: 6 })
-          .fill('#FFB84D')
-          .margin({ right: 4 })
-        Circle({ width: 8, height: 8 })
-          .fill('#FFB84D')
-          .opacity(0.7)
-          .margin({ right: 4 })
-        Circle({ width: 6, height: 6 })
-          .fill('#FFB84D')
-          .opacity(0.5)
+  ComingSoonCard(borderRadiusValue: number | BorderRadiuses = 12) {
+    Row() {
+      // 图标区域
+      Stack() {
+        Circle({ width: 48, height: 48 })
+          .fill('#F0F0F0') // 浅灰色背景
+        Image($r('app.media.ic_public_coming_soon')) // 假设这是一个合适的“更多”图标
+          .width(24)
+          .height(24)
+          .fillColor('#B0B0B0') // 中灰色图标
       }
-      .margin({ bottom: 8 })
-      
-      Text('更多功能')
-        .fontSize(14)
-        .fontColor('#333333')
-        .fontWeight(500)
-        .margin({ bottom: 2 })
-      
-      Text('接入中...')
-        .fontSize(12)
-        .fontColor('#FFB84D')
-        .fontWeight(400)
+      .margin({ right: 16 })
+
+      // 文字区域
+      Column() {
+        Text('更多功能')
+          .fontSize(16)
+          .fontColor('#666666') // 深灰色文字
+          .fontWeight(FontWeight.Medium)
+          .lineHeight(22)
+
+        Text('敬请期待后续更新')
+          .fontSize(12)
+          .fontColor('#AAAAAA') // 浅灰色辅助文字
+          .margin({ top: 2 })
+          .lineHeight(18)
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      // 装饰性元素 (可选，例如一个小的加载指示器或省略号)
+      Row(){
+        Text('. . .')
+          .fontSize(20)
+          .fontColor('#D0D0D0')
+      }
+
     }
     .width('100%')
-    .height(80)
-    .justifyContent(FlexAlign.Center)
-    .backgroundColor('#FFFFFF')
-    .borderRadius(12)
-    .border({ width: 1, color: '#FFE4B5', style: BorderStyle.Dashed })
-    .shadow({ radius: 2, color: '#1A000000', offsetX: 0, offsetY: 1 })
+    .height(72)
+    .padding({ left: 16, right: 16 })
+    .backgroundColor('#FAFAFA') // 非常浅的灰色背景，与普通卡片区分
+    .borderRadius(borderRadiusValue)
+    .border({width:1, color:'#EAEAEA', style: BorderStyle.Dashed})
+    .opacity(0.8) // 整体略微透明，表示“未激活”或“未来”状态
   }
 
   // 公告卡片构建器
   @Builder
   NoticeCard(notice: NoticeVO) {
-    Column({ space: 8 }) {
+    Column({ space: 12 }) {
       Row() {
-        Text(notice.title)
-          .fontSize(16)
-          .fontColor('#333333')
-          .fontWeight(500)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .layoutWeight(1)
+        // 公告标识
+        Row() {
+          Circle({ width: 6, height: 6 })
+            .fill('#3B82F6')
+            .margin({ right: 6 })
+          Text('公告')
+            .fontSize(11)
+            .fontColor('#3B82F6')
+            .fontWeight(500)
+        }
+        .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+        .backgroundColor('#EFF6FF')
+        .borderRadius(12)
+        
+        Blank()
         
         Text(notice.time.split(' ')[0])
           .fontSize(12)
-          .fontColor('#999999')
+          .fontColor('#9CA3AF')
+          .fontWeight(400)
       }
       .width('100%')
       
+      Text(notice.title)
+        .fontSize(16)
+        .fontColor('#111827')
+        .fontWeight(600)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .width('100%')
+        .lineHeight(24)
+      
       Text(notice.content)
         .fontSize(14)
-        .fontColor('#666666')
+        .fontColor('#6B7280')
+        .fontWeight(400)
         .maxLines(2)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .width('100%')
+        .lineHeight(20)
     }
     .width('100%')
-    .padding(16)
+    .padding(20)
     .backgroundColor('#FFFFFF')
-    .borderRadius(12)
-    .shadow({ radius: 4, color: '#1F000000', offsetX: 0, offsetY: 2 })
+    .borderRadius(16)
+    .border({ width: 1, color: '#F3F4F6' })
+    .shadow({ 
+      radius: 12, 
+      color: '#0A000000', 
+      offsetX: 0, 
+      offsetY: 4,
+      fill: true
+    })
     .onClick(() => {
       // 跳转到公告详情
-
       router.pushUrl({
         url: 'pages/NoticeDetailPage',
         params: { notice: notice}
@@ -181,11 +245,11 @@ export default struct HomePage {
       }
       .width('100%')
       .padding({ left: 20, right: 20, top: 20, bottom: 16 })
-      .backgroundColor('#F8F9FA')
+      .backgroundColor('#FFFFFF')
 
       Scroll() {
-        Column({ space: 20 }) {
-          // 功能区域
+        Column({ space: 32 }) {
+          // 横向功能区域
           Column({ space: 12 }) {
             Row() {
               Text('快捷功能')
@@ -196,55 +260,53 @@ export default struct HomePage {
             .width('100%')
             .padding({ left: 20, right: 20 })
             
-            Grid() {
-              GridItem() {
-                this.FunctionCard('个人履历', $r('app.media.resume'), '#4ECDC4', () => {
-                  router.pushUrl({ url: CommonConstants.DOC_PAGE });
-                })
-              }
-              
-              GridItem() {
-                this.FunctionCard('成绩查询', $r('app.media.ic_exam'), '#FF6B6B', () => {
-                  router.pushUrl({ url: CommonConstants.EXAM_PAGE });
-                })
-              }
-              
-              GridItem() {
-                this.FunctionCard('随机抽号', $r('app.media.ic_random'), '#FFB74D', () => {
-                  router.pushUrl({ url: CommonConstants.RANDOM_PAGE });
-                })
-              }
-              
-              GridItem() {
-                this.ComingSoonCard()
-              }
+            // 功能卡片区域
+            Column() {
+              this.FunctionCard('个人履历', $r('app.media.resume'), '#E6F2FF', '#007DFF', () => {
+                router.pushUrl({ url: 'pages/DocPage' });
+                // promptAction.showToast({ message: '个人履历功能开发中...' })
+              }, { topLeft: 12, topRight: 12, bottomLeft: 0, bottomRight: 0 }) // 顶部卡片，仅顶部圆角
+              this.FunctionCard('成绩查询', $r('app.media.ic_exam'), '#FFF0F0', '#FF5A5A', () => {
+                router.pushUrl({ url: 'pages/ExamPage' });
+                // promptAction.showToast({ message: '成绩查询功能开发中...' })
+              }, 0) // 中间卡片，无圆角
+              this.FunctionCard('随机抽号', $r('app.media.ic_random'), '#E9F7EA', '#4CAF50', () => {
+                router.pushUrl({ url: 'pages/RandomPage' });
+                // promptAction.showToast({ message: '随机抽号功能开发中...' })
+              }, 0) // 中间卡片，无圆角
+              this.ComingSoonCard({ topLeft: 0, topRight: 0, bottomLeft: 12, bottomRight: 12 }) // 底部卡片，仅底部圆角
             }
-            .columnsTemplate('1fr 1fr')
-            .rowsTemplate('1fr 1fr')
-            .columnsGap(12)
-            .height(180)
             .padding({ left: 20, right: 20 })
           }
 
           // 最新公告区域
-          Column({ space: 12 }) {
+          Column({ space: 16 }) {
             Row() {
               Text('最新公告')
-                .fontSize(18)
-                .fontColor('#333333')
-                .fontWeight(600)
+                .fontSize(20)
+                .fontColor('#111827')
+                .fontWeight(700)
+                .lineHeight(28)
               
               Blank()
               
-              Text('查看更多')
-                .fontSize(14)
-                .fontColor('#1698CE')
-                .onClick(() => {
-                  router.pushUrl({ url: 'pages/NoticePage' });
-                })
+              Row() {
+                Text('查看更多')
+                  .fontSize(14)
+                  .fontColor('#3B82F6')
+                  .fontWeight(500)
+                Image($r('sys.media.ohos_ic_public_arrow_right'))
+                  .width(16)
+                  .height(16)
+                  .fillColor('#3B82F6')
+                  .margin({ left: 4 })
+              }
+              .onClick(() => {
+                router.pushUrl({ url: 'pages/NoticePage' });
+              })
             }
             .width('100%')
-            .padding({ left: 20, right: 20 })
+            .padding({ left: 24, right: 24 })
             
             if (this.loading) {
               Row() {
@@ -266,7 +328,7 @@ export default struct HomePage {
                   this.NoticeCard(notice)
                 }, (notice: NoticeVO) => notice.id.toString())
               }
-              .padding({ left: 20, right: 20 })
+              .padding({ left: 24, right: 24 })
             } else {
               Column() {
                 Image($r('app.media.empty'))
@@ -283,13 +345,21 @@ export default struct HomePage {
               .justifyContent(FlexAlign.Center)
             }
           }
+
+          Text('最新公告仅展示最新5条，全部公告请前往公告中心查看')
+            .fontSize(12)
+            .fontColor('#999999')
+            .textAlign(TextAlign.Center)
+            .width('100%')
+            .padding({ left: 16, right: 16, bottom: 20 })
         }
+        .margin({ top: 20, bottom: 20})
       }
       .layoutWeight(1)
       .scrollBar(BarState.Off)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F8F9FA')
+    .backgroundColor('#FAFBFC')
   }
 }
