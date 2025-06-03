@@ -2,11 +2,11 @@
 import router from '@ohos.router';
 import promptAction from '@ohos.promptAction';
 import preferences from '@ohos.data.preferences';
-import HttpService from '../services/HttpService';
 import CommonConstants from '../common/Constants';
 import { RouterParams, ToastOptions } from '../models/dataModels';
 import TokenManager from '../utils/TokenManager';
 import { GlobalContext } from '../utils/GlobalContext';
+import HttpService from '../services/HttpService';
 
 @Component
 export default struct ProfilePage {
@@ -58,10 +58,6 @@ export default struct ProfilePage {
         console.error('上下文未初始化');
         return;
       }
-
-      let pref = await preferences.getPreferences(context, 'userPrefs');
-      await pref.delete('username');
-      await pref.delete('password');
       
       const toastOptions: ToastOptions = { message: '已退出登录', duration: 2000 };
       promptAction.showToast(toastOptions);
@@ -77,7 +73,6 @@ export default struct ProfilePage {
     }
   }
 
-  // 菜单项构建器
   @Builder
   MenuItem(icon: Resource, title: string, showArrow: boolean = true, onClick?: () => void) {
     Row() {
@@ -141,7 +136,8 @@ export default struct ProfilePage {
       .height(140)
       .padding({ top: 40, bottom: 20 })
       .backgroundColor('#1698CE')
-      .justifyContent(FlexAlign.Center)
+      .shadow({ radius: 2, color: '#1F000000', offsetX: 0, offsetY: 1 })
+
 
       Scroll() {
         Column({ space: 12 }) {
@@ -251,8 +247,10 @@ export default struct ProfilePage {
           }
         }
         .padding(20)
+        .justifyContent(FlexAlign.Start)
       }
       .layoutWeight(1)
+      .scrollable(ScrollDirection.Vertical)
       .scrollBar(BarState.Off)
     }
     .width('100%')

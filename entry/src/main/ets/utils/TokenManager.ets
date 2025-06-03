@@ -38,7 +38,7 @@ export class TokenManager {
       await pref.flush();
 
       AppStorage.setOrCreate('token', token);
-      AppStorage.setOrCreate('username', username);
+      AppStorage.setOrCreate('name', username);
       AppStorage.setOrCreate('isLogin', true);
     } catch (error) {
       throw new Error(`保存Token失败: ${error.message}`);
