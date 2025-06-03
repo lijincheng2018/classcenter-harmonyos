@@ -19,6 +19,7 @@ export default class CommonConstants {
   static readonly API_LOGIN: string = '/doLogin';
   static readonly API_LOGOUT: string = '/logout';
   static readonly API_VALIDATE_TOKEN: string = '/validateStatus';
+  static readonly API_GET_USER_BASIC_INFO: string = '/users';
   
   // 个人荣誉相关API
   static readonly API_PERSONAL: string = '/personal';

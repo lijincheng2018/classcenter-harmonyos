@@ -61,7 +61,6 @@ export class TokenManager {
       });
 
       const token = pref.getSync(TokenManager.TOKEN_KEY, '').toString();
-
       return token;
     } catch (error) {
       return '';
@@ -109,7 +108,7 @@ export class TokenManager {
       const userInfo = await TokenManager.getUserInfo();
 
       AppStorage.setOrCreate('token', userInfo.token);
-      AppStorage.setOrCreate('name', userInfo.username);
+      AppStorage.setOrCreate('username', userInfo.username);
       AppStorage.setOrCreate('isLogin', userInfo.isLogin);
       console.log('AppStorage初始化完成');
     } catch (error) {

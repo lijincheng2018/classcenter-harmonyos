@@ -36,6 +36,16 @@ export interface TokenValidateDTO {
   token: string;
 }
 
+export interface UserBasicInfo {
+  classname: string;
+  zhiwu: string;
+  avatar: string;
+  name: string;
+  usergroup: string;
+  classid: string;
+  zhuanye: string;
+}
+
 // 个人荣誉相关
 export interface PersonalDTO {
   title: string;

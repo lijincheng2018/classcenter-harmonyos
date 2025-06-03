@@ -4,7 +4,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import HttpService from '../services/HttpService';
 import CommonConstants from '../common/Constants';
 import TokenManager from '../utils/TokenManager';
-import { TaskCountResult } from '../models/dataModels';
+import { TaskCountResult, UserBasicInfo } from '../models/dataModels';
 import { Want } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { GlobalContext } from '../utils/GlobalContext';
@@ -16,7 +16,20 @@ interface DataVO {
   totalCount: number;
   finishCount: number;
   title: string;
+  userName: string;
+  userRole: string;
+  userGroup: string;
   lastUpdate: string;
+}
+
+interface messageObjectParams {
+  method: string;
+  action: string;
+}
+
+interface messageObject {
+  method: string;
+  params: messageObjectParams;
 }
 
 export default class EntryFormAbility extends FormExtensionAbility {
@@ -49,6 +62,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
       totalCount: 0,
       finishCount: 0,
       title: '任务完成情况',
+      userName: 'N/A',
+      userRole: 'N/A',
+      userGroup: '3',
       lastUpdate: this.getCurrentTime()
     };
 
@@ -57,6 +73,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
     AppStorage.setOrCreate('finishCount', formData.finishCount);
     AppStorage.setOrCreate('title', formData.title);
     AppStorage.setOrCreate('lastUpdate', formData.lastUpdate);
+    AppStorage.setOrCreate('userName', formData.userName);
+    AppStorage.setOrCreate('userRole', formData.userRole);
+    AppStorage.setOrCreate('userGroup', formData.userGroup);
 
     hilog.info(DOMAIN_NUMBER, TAG, `Initial form data: ${JSON.stringify(formData)}`);
     hilog.info(DOMAIN_NUMBER, TAG, `totalCount: ${formData.totalCount}, finishCount: ${formData.finishCount}`);
@@ -101,6 +120,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
            totalCount: 0,
            finishCount: 0,
            title: '任务完成情况',
+           userName: 'N/A',
+           userRole: 'N/A',
+           userGroup: '3',
            lastUpdate: this.getCurrentTime()
          };
         
@@ -109,7 +131,10 @@ export default class EntryFormAbility extends FormExtensionAbility {
         AppStorage.setOrCreate('finishCount', formData.finishCount);
         AppStorage.setOrCreate('title', formData.title);
         AppStorage.setOrCreate('lastUpdate', formData.lastUpdate);
-        
+        AppStorage.setOrCreate('userName', formData.userName);
+        AppStorage.setOrCreate('userRole', formData.userRole);
+        AppStorage.setOrCreate('userGroup', formData.userGroup);
+
         let formInfo: formBindingData.FormBindingData = formBindingData.createFormBindingData(formData);
         formProvider.updateForm(formId, formInfo);
         return;
@@ -122,14 +147,16 @@ export default class EntryFormAbility extends FormExtensionAbility {
       
       hilog.info(DOMAIN_NUMBER, TAG, `Calling API: ${CommonConstants.API_TASK_COUNT}`);
       const response = await httpService.get<TaskCountResult>(CommonConstants.API_TASK_COUNT);
-      
-      hilog.info(DOMAIN_NUMBER, TAG, `API Response: ${JSON.stringify(response)}`);
-      
-      if (response.code === 200 && response.data) {
+      const response_basic_info = await httpService.get<UserBasicInfo>(CommonConstants.API_GET_USER_BASIC_INFO);
+
+      if (response.code === 200 && response.data && response_basic_info.code === 200 && response_basic_info.data) {
         const formData : DataVO = {
           totalCount: response.data.totalCount || 0,
           finishCount: response.data.finishCount || 0,
           title: '任务完成情况',
+          userName: response_basic_info.data.name,
+          userRole: response_basic_info.data.zhiwu,
+          userGroup: response_basic_info.data.usergroup,
           lastUpdate: this.getCurrentTime()
         };
         
@@ -141,7 +168,10 @@ export default class EntryFormAbility extends FormExtensionAbility {
         AppStorage.setOrCreate('finishCount', formData.finishCount);
         AppStorage.setOrCreate('title', formData.title);
         AppStorage.setOrCreate('lastUpdate', formData.lastUpdate);
-        
+        AppStorage.setOrCreate('userName', formData.userName);
+        AppStorage.setOrCreate('userRole', formData.userRole);
+        AppStorage.setOrCreate('userGroup', formData.userGroup);
+
         let formInfo: formBindingData.FormBindingData = formBindingData.createFormBindingData(formData);
         
         formProvider.updateForm(formId, formInfo).then(() => {
@@ -156,6 +186,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
            totalCount: 0,
            finishCount: 0,
            title: '任务完成情况',
+           userName: 'N/A',
+           userRole: 'N/A',
+           userGroup: '3',
            lastUpdate: this.getCurrentTime()
          };
         
@@ -164,7 +197,10 @@ export default class EntryFormAbility extends FormExtensionAbility {
         AppStorage.setOrCreate('finishCount', formData.finishCount);
         AppStorage.setOrCreate('title', formData.title);
         AppStorage.setOrCreate('lastUpdate', formData.lastUpdate);
-        
+        AppStorage.setOrCreate('userName', formData.userName);
+        AppStorage.setOrCreate('userRole', formData.userRole);
+        AppStorage.setOrCreate('userGroup', formData.userGroup);
+
         let formInfo: formBindingData.FormBindingData = formBindingData.createFormBindingData(formData);
         formProvider.updateForm(formId, formInfo);
       }
@@ -175,6 +211,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
          totalCount: 0,
          finishCount: 0,
          title: '任务完成情况',
+         userName: 'N/A',
+         userRole: 'N/A',
+         userGroup: '3',
          lastUpdate: this.getCurrentTime()
        };
       
@@ -183,6 +222,9 @@ export default class EntryFormAbility extends FormExtensionAbility {
       AppStorage.setOrCreate('finishCount', formData.finishCount);
       AppStorage.setOrCreate('title', formData.title);
       AppStorage.setOrCreate('lastUpdate', formData.lastUpdate);
+      AppStorage.setOrCreate('userName', formData.userName);
+      AppStorage.setOrCreate('userRole', formData.userRole);
+      AppStorage.setOrCreate('userGroup', formData.userGroup);
       
       let formInfo: formBindingData.FormBindingData = formBindingData.createFormBindingData(formData);
       formProvider.updateForm(formId, formInfo);
@@ -203,10 +245,25 @@ export default class EntryFormAbility extends FormExtensionAbility {
   // 卡片事件处理
   onFormEvent(formId: string, message: string): void {
     hilog.info(DOMAIN_NUMBER, TAG, `FormAbility onFormEvent, formId = ${formId}, message: ${JSON.stringify(message)}`);
+
+    this.onUpdateForm(formId);
     
-    // 处理卡片点击事件，可以在这里刷新数据
-    if (message === 'refresh') {
-      this.loadTaskData(formId);
-    }
+    // try {
+    //   // 解析消息
+    //   const messageObj : messageObject = JSON.parse(message);
+    //   hilog.info(DOMAIN_NUMBER, TAG, `Parsed message: ${JSON.stringify(messageObj)}`);
+    //
+    //   // 处理刷新数据请求
+    //   if (messageObj.method === 'refreshWidgetData') {
+    //     hilog.info(DOMAIN_NUMBER, TAG, 'Refreshing widget data...');
+    //     this.loadTaskData(formId);
+    //   }
+    // } catch (error) {
+    //   hilog.error(DOMAIN_NUMBER, TAG, `Failed to parse message: ${error}`);
+    //   // 如果解析失败，尝试直接处理字符串消息
+    //   if (message === 'refresh') {
+    //     this.loadTaskData(formId);
+    //   }
+    // }
   }
 }

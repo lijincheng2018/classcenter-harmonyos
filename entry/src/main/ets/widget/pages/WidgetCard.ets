@@ -8,6 +8,34 @@ struct WidgetCard {
   @LocalStorageProp('finishCount') finishCount: number = 0;
   @LocalStorageProp('title') title: string = "待办事项";
   @LocalStorageProp('lastUpdate') lastUpdate: string = "";
+  @LocalStorageProp('userName') userName: string = "N/A";
+  @LocalStorageProp('userRole') userRole: string = "N/A";
+  @LocalStorageProp('userGroup') userGroup: string = "3";
+
+  /*
+   * 刷新数据方法
+   */
+  private refreshData(): void {
+    // 触发数据刷新的逻辑
+    postCardAction(this, {
+      action: 'message',
+      params: {
+        method: 'refreshWidgetData'
+      }
+    });
+  }
+
+  private getPermissionLabel(permision : string): string {
+    if (permision === '1') {
+      return '超级管理员';
+    } else if (permision === '2') {
+      return '管理员';
+    } else if (permision === '3') {
+      return '学生';
+    } else {
+      return '课代表';
+    }
+  }
   
   /*
    * The action type.
@@ -36,7 +64,7 @@ struct WidgetCard {
   }
 
   build() {
-    Column({ space: 8 }) {
+    Column({ space: 6 }) {
       // 标题区域
       Row() {
         Text(this.title)
@@ -52,9 +80,55 @@ struct WidgetCard {
             .fontSize(10)
             .fontColor('#999999')
         }
+        
+        // 刷新按钮
+        Button({ type: ButtonType.Circle }) {
+          Image($r('app.media.refresh'))
+            .width(20)
+            .height(20)
+            .fillColor('#666666')
+        }
+        .width(24)
+        .height(24)
+        .backgroundColor('#F5F5F5')
+        .margin({ left: 8 })
+        .onClick(() => {
+          this.refreshData();
+        })
       }
       .width('100%')
       .padding({ left: 12, right: 12, top: 8 })
+      
+      // 个人信息区域
+      Row({ space: 8 }) {
+        // 用户信息
+        Column({ space: 2 }) {
+          Text(this.userName)
+            .fontSize(13)
+            .fontColor('#333333')
+            .fontWeight(FontWeight.Medium)
+          Text(this.getPermissionLabel(this.userGroup))
+            .fontSize(11)
+            .fontColor('#666666')
+        }
+        .alignItems(HorizontalAlign.Start)
+        
+        Blank()
+        
+        // 状态标签
+        Text(this.userRole)
+          .fontSize(10)
+          .fontColor('#10B981')
+          .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+          .backgroundColor('#F0FDF4')
+          .borderRadius(10)
+          .border({ width: 1, color: '#10B981' })
+      }
+      .width('100%')
+      .padding({ left: 12, right: 12 })
+      .backgroundColor('#FAFAFA')
+      .borderRadius(8)
+      .margin({ left: 12, right: 12 })
       
       // 数据展示区域
       Row({ space: 8 }) {
@@ -120,7 +194,7 @@ struct WidgetCard {
         .fontColor('#999999')
         .textAlign(TextAlign.Center)
         .width('100%')
-        .padding({ bottom: 8 })
+        .padding({ bottom: 6 })
     }
     .width(this.fullWidthPercent)
     .height(this.fullHeightPercent)
