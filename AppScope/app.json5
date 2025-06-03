@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "cn.ljcljc.classcenter",
     "vendor": "ljc",
-    "versionCode": 1000100,
-    "versionName": "1.0.1",
+    "versionCode": 1000200,
+    "versionName": "1.0.2",
     "icon": "$media:app_icon",
     "label": "$string:app_name"
   }
