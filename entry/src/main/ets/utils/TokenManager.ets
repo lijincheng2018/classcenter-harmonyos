@@ -2,7 +2,7 @@
 import preferences from '@ohos.data.preferences';
 import router from '@ohos.router';
 import CommonConstants from '../common/Constants';
-import { UserInfo, Result, tokenValidateDTO } from '../models/dataModels';
+import { UserInfo, tokenValidateDTO } from '../models/dataModels';
 import { GlobalContext } from '../utils/GlobalContext';
 import HttpService from '../services/HttpService';
 
@@ -108,7 +108,7 @@ export class TokenManager {
       const userInfo = await TokenManager.getUserInfo();
 
       AppStorage.setOrCreate('token', userInfo.token);
-      AppStorage.setOrCreate('username', userInfo.username);
+      AppStorage.setOrCreate('name', userInfo.username);
       AppStorage.setOrCreate('isLogin', userInfo.isLogin);
       console.log('AppStorage初始化完成');
     } catch (error) {
@@ -141,7 +141,7 @@ export class TokenManager {
 
       // 清除AppStorage
       AppStorage.setOrCreate('token', '');
-      AppStorage.setOrCreate('username', '');
+      AppStorage.setOrCreate('name', '');
       AppStorage.setOrCreate('isLogin', false);
 
       console.log('Token清除成功');
