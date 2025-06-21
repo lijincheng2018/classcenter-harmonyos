@@ -1,20 +1,6 @@
 {
   "app": {
-    "signingConfigs": [
-      {
-        "name": "default",
-        "type": "HarmonyOS",
-        "material": {
-          "storeFile": "D:/DevEcoStudioProjects/key/classcenter.p12",
-          "storePassword": "000000202B51EBE3DE480D1A641E86B3FB6066B5EFA0E788D38490A26CE0203DE74306974D54A8FA3365F0CC8841D1AA",
-          "keyAlias": "classcenter_ljc",
-          "keyPassword": "00000020C89EE04956B4F36FE4B1C8D8F8B1C31D9819849AB5E258BECC0204D64667EFD63B4D704F762E523066134156",
-          "signAlg": "SHA256withECDSA",
-          "profile": "D:/DevEcoStudioProjects/key/classcenterRelease.p7b",
-          "certpath": "D:/DevEcoStudioProjects/key/ljc_classcenter.cer"
-        }
-      }
-    ],
+    "signingConfigs": [],
     "products": [
       {
         "name": "default",
