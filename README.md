@@ -1,7 +1,8 @@
 # 班级信息中心云平台 鸿蒙版 V1.0
 
 > **仅供学习参考，未经书面授权，不允许以任何形式转载、售卖、二次开发。**
-> 🌟 如果您觉得这套代码有所帮助，请在 GitHub 上为本项目（lijincheng2018/classcenter-harmonyos）点亮 Star，谢谢！
+> 
+> 🌟 如果您觉得这套代码有所帮助，请在 GitHub 上为本项目（lijincheng2018/classcenter-harmonyos）点亮 **Star**，谢谢！
 
 ## 项目简介
 
